@@ -1,0 +1,17 @@
+{
+    "name": "fernando/kafka-queue",
+    "require": {
+        "laravel/framework": "8.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fernando\\KafkaQueue\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Fernando Rubio",
+            "email": "pablo.rubio.bailon@gmail.com"
+        }
+    ]
+}
