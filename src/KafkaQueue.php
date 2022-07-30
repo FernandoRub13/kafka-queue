@@ -33,22 +33,28 @@ class KafkaQueue extends Queue implements QueueContract
     {
         $this->consumer->subscribe($queue);
 
-        $message = $this->consumer->consume(120 * 1000);
-
-        switch ($message->err) {
-            case RD_KAFKA_RESP_ERR_NO_ERROR:
+        try {
+            
+            
+            $message = $this->consumer->consume(120 * 1000);
+            
+            switch ($message->err) {
+                case RD_KAFKA_RESP_ERR_NO_ERROR:
                 $job = unserialize($message->payload);
                 $job->handle();
                 break;
-            case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
                 var_dump("No more messages; will wait for more\n");
                 break;
-            case RD_KAFKA_RESP_ERR__TIMED_OUT:
-                var_dump("Timed out\n");
-                break;
-            default:
-                throw new \Exception($message->errstr(), $message->err);
-                break;
+                case RD_KAFKA_RESP_ERR__TIMED_OUT:
+                    var_dump("Timed out\n");
+                    break;
+                    default:
+                    throw new \Exception($message->errstr(), $message->err);
+                    break;
+                }
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
         }
     }
 
