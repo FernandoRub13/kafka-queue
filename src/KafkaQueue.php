@@ -40,16 +40,16 @@ class KafkaQueue extends Queue implements QueueContract
             
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                $job = unserialize($message->payload);
-                $job->handle();
-                break;
+                    $job = unserialize($message->payload);
+                    $job->handle();
+                    break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
-                var_dump("No more messages; will wait for more\n");
-                break;
+                    var_dump("No more messages; will wait for more\n");
+                    break;
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:
                     var_dump("Timed out\n");
                     break;
-                    default:
+                default:
                     throw new \Exception($message->errstr(), $message->err);
                     break;
                 }
